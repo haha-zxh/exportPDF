@@ -1,0 +1,49 @@
+{
+  "desc": "项目配置文件~",
+  "isActive": true,
+  "value": {
+    "project": {
+      "desc": "项目底层相关的配置项都在此处取~",
+      "isActive": true,
+      "value": {
+        "version": {
+          "desc": "项目当前版本号~",
+          "isActive": true,
+          "value": "v1.1.0.0"
+        },
+        "devUrl": {
+          "desc": "项目开发环境 url~",
+          "isActive": true,
+          "value": ""
+        },
+        "prodUrl": {
+          "desc": "项目生产环境 url~",
+          "isActive": true,
+          "value": ""
+        }
+      }
+    },
+    "service": {
+      "desc": "项目业务相关的配置项都在此处取~ (取值字段默认统一为 value)",
+      "isActive": true,
+      "value": {
+        "global": {
+          "desc": "全局统一配置项~",
+          "isActive": true,
+          "value": {
+            "logo": {
+              "desc": "项目 logo~",
+              "isActive": true,
+              "value": "/logo/logo.png"
+            },
+            "tabTitle": {
+              "desc": "浏览器标签页标题~",
+              "isActive": true,
+              "value": "用户中心&安全组件"
+            }
+          }
+        }
+      }
+    }
+  }
+}

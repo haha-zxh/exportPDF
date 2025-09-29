@@ -1,0 +1,7 @@
+.DS_Store
+node_modules
+/dist
+# 编辑器产生的文件
+.idea
+.vscode
+/package-lock.json
