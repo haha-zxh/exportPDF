@@ -198,6 +198,9 @@ const exportClick = () => {
   td {
     font-size: 20px;
     padding: 5px 0;
+    span {
+      color: gray;
+    }
   }
   :deep(.el-input__wrapper) {
     box-shadow: none;
