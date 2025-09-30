@@ -122,7 +122,7 @@
             總重
           </td>
           <td>
-            <el-input v-if="isEdit" v-model="tableData.totalWeight" />
+            <el-input v-if="isEdit" v-model="tableData.totalWeight" @blur="calculateMissingValue" />
             <span v-else>{{ tableData.totalWeight }}</span>
           </td>
         </tr>
@@ -131,7 +131,7 @@
             空重
           </td>
           <td>
-            <el-input v-if="isEdit" v-model="tableData.emptyWeight" />
+            <el-input v-if="isEdit" v-model="tableData.emptyWeight" @blur="calculateMissingValue" />
             <span v-else>{{ tableData.emptyWeight }}</span>
           </td>
         </tr>
@@ -140,7 +140,7 @@
             净重
           </td>
           <td>
-            <el-input v-if="isEdit" v-model="tableData.netWeight" />
+            <el-input v-if="isEdit" v-model="tableData.netWeight" @blur="calculateMissingValue" />
             <span v-else>{{ tableData.netWeight }}</span>
           </td>
         </tr>
@@ -163,7 +163,7 @@ const tableData = reactive({
   scalesName: '', // 司称员
   Supervisor: '', // 主管
   number: '', // 序号
-  date: '', // 日期
+  date: timeTool.formatTimeInPattern(new Date()), // 日期
   entryTime: '', // 入厂时间
   factoryTime: '', // 出厂时间
   carNumber: '', // 车号
@@ -176,6 +176,36 @@ const tableData = reactive({
 const exportClick = () => {
   const name = '车牌' + tableData.carNumber + '-' + timeTool.formatTime(new Date())
   htmlToPdf.getPdf(name, '#table')
+}
+const calculateMissingValue = () => {
+  // 获取输入值并转换为数字
+  const total = parseFloat(tableData.totalWeight)
+  const empty = parseFloat(tableData.emptyWeight)
+  const net = parseFloat(tableData.netWeight)
+  // 统计有效输入的数量
+  const validInputs = [
+    !isNaN(total),
+    !isNaN(empty),
+    !isNaN(net)
+  ].filter(Boolean).length
+  // 如果正好有两个有效输入
+  if (validInputs === 2) {
+    let calculatedValue
+    // 根据已有的两个值计算第三个
+    if (isNaN(total)) {
+      // 计算总重 = 空重 + 净重
+      calculatedValue = empty + net
+      tableData.totalWeight = calculatedValue
+    } else if (isNaN(empty)) {
+      // 计算空重 = 总重 - 净重
+      calculatedValue = total - net
+      tableData.emptyWeight = calculatedValue
+    } else if (isNaN(net)) {
+      // 计算净重 = 总重 - 空重
+      calculatedValue = total - empty
+      tableData.netWeight = calculatedValue
+    }
+  }
 }
 </script>
 <style scoped lang="less">
@@ -200,6 +230,7 @@ const exportClick = () => {
     padding: 5px 0;
     span {
       color: gray;
+      font-size: 15px;
     }
   }
   :deep(.el-input__wrapper) {
